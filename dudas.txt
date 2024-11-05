@@ -1,0 +1,3 @@
+1+  ESTA BIEN PASAR PROPIEDADES Y DUEÑOS EN GETALL?? ES PARA LISTAR LAS PROPIEDADES
+
+2+ Esta bien la implementacion del trycatch?? nos retorna el status que corresponde.

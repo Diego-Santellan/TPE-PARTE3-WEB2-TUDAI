@@ -95,3 +95,11 @@ Queremos agradecer a los docentes y ayudantes de la cátedra, así como a la uni
 
 
 
+
+<!-- Rutas :  -->
+1) Traer todas las propiedades y los dueños de las mismas 
+http://localhost/tpespecial3/api/property
+
+2)1) Traer una propiedad y el dueño de la misma 
+
+http://localhost/tpespecial3/api/property/10

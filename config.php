@@ -1,6 +1,5 @@
 <?php
-
-// constates para la conexion de php cpn la BD 
+// abrir conexión a BD. Paso 1.  
     const MYSQL_USER = 'root';
     const MYSQL_PASS = '';
     const MYSQL_DB = 'inmobiliaria';
