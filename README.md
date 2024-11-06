@@ -97,9 +97,104 @@ Queremos agradecer a los docentes y ayudantes de la cátedra, así como a la uni
 
 
 <!-- Rutas :  -->
-1) Traer todas las propiedades y los dueños de las mismas 
+1) Traer TODAS las propiedades y los dueños de las mismas y que el codigo de respuesta sea 200
 http://localhost/tpespecial3/api/property
 
-2)1) Traer una propiedad y el dueño de la misma 
-
+2) Traer UNA propiedad y el dueño de la misma y que el codigo de respuesta sea 200
 http://localhost/tpespecial3/api/property/10
+
+Traer UNA propiedad y el dueño de la misma  y que el codigo de respuesta sea 404
+http://localhost/tpespecial3/api/property/100000
+
+3) CREAR un recurso propiedad y que que el codigo de respuesta sea 201
+
+http://localhost/tpespecial3/api/property
+
+header: Content-Type:application/json
+body: 
+ {
+    "typePropertyAdd": "casa",
+    "zonePropertyAdd": "centro",
+    "pricePropertyAdd": 12000,
+    "descriptionPropertyAdd": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+    "modePropertyAdd": "venta",
+    "statusPropertyAdd": "disponible",
+    "cityPropertyAdd": "barceloneta",
+    "id_ownerPropertyAdd": 3
+}
+
+
+ CREAR un recurso propiedad y que te de codigo de respuesta 400:
+
+ header: Content-Type:application/json
+
+body {
+    "typePropertyAdd": "casa",
+    "zonePropertyAdd": "centro",
+    "pricePropertyAdd": 12000,
+    "descriptionPropertyAdd": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+    "modePropertyAdd": "venta",
+    "statusPropertyAdd": "disponible",
+    "cityPropertyAdd": "Mallorca",
+    "id_ownerPropertyAdd": 1
+}
+
+
+4) Actualizar una propiedady que te de codigo de respuesta 200
+http://localhost/tpespecial3/api/property/20
+
+ header: Content-Type:application/json
+
+
+body:
+{
+    "typePropertyEdit": "departamento",
+    "zonePropertyEdit": "uncas",
+    "pricePropertyEdit": 12000,
+    "descriptionPropertyEdit": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+    "modePropertyEdit": "alquiler",
+    "statusPropertyEdit": "disponible",
+    "cityPropertyEdit": "valencia",
+    "id_ownerPropertyEdit": 3
+    }
+
+
+
+
+
+
+ Actualizar una propiedad y que te codigo de respuesta 400
+ http://localhost/tpespecial3/api/property/2000
+  header: Content-Type:application/json
+
+body:
+{
+    "typePropertyEdit": "departamento",
+    "zonePropertyEdit": "uncas",
+    "pricePropertyEdit": 12000,
+    "descriptionPropertyEdit": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+    "modePropertyEdit": "alquiler",
+    "statusPropertyEdit": "disponible",
+    "cityPropertyEdit": "valencia",
+    "id_ownerPropertyEdit": 300
+    }
+
+
+5)ORDENAR POR CUALQUIER COLUMNA YA SEA ASCENDENTE O DESCENDENTEMENTE :
+
+ordenar por columna precio de forma descendente y que el codigo de respuesta sea :
+http://localhost/tpespecial3/api/property?orderBy=price&mode=DESC
+
+ordenar por columna precio de forma ascendente y que el codigo de respuesta sea:
+http://localhost/tpespecial3/api/property?orderBy=price&mode=ASC
+
+ordenar por columna zona de forma descendente y que el codigo de respuesta sea:
+http://localhost/tpespecial3/api/property?orderBy=zone&mode=DESC
+
+ordenar por columna zona de forma ascendente y que el codigo de respuesta sea:
+http://localhost/tpespecial3/api/property?orderBy=zone&mode=ASC
+
+Intentar ordenar por columna color (inexistente) de forma descendente que el codigo de respuesta sea: 
+http://localhost/tpespecial3/api/property?orderBy=color&mode=DESC
+
+5) HACER DEAFULT 
