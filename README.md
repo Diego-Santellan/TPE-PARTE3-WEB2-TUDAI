@@ -211,4 +211,10 @@ http://localhost/tpespecial3/api/property?filterBy=type&filter_value=casa
 
 con error http://localhost/tpespecial3/api/property?quantity=10&numberPage=h
 
+
+7) login token 
+http://localhost/tpespecial3/api/usuarios/token
+
+auth: webadmin admin 
+
 5) HACER DEAFULT 

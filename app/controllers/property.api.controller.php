@@ -3,6 +3,7 @@
 require_once './app/models/property.model.php';
 require_once './app/models/owner.model.php';
 require_once './app/views/json.view.php';
+require_once './libs/jwt.php';
 
 //CLASE: cada componente del MVC es un clase y los métodos lógicos van dentro de cada clase 
 class PropertyApiController
@@ -87,8 +88,6 @@ class PropertyApiController
             }
             
             // lo que llega es de tipo numero , es mayor que 0 y menor que 99.999?
-
-          
 
             if ($req->query->quantity > $totalProperties || $req->query->quantity < 0) {
                 return $this->view->response( 'Error: fuera de rango cantidad a traer', 400);
@@ -202,6 +201,12 @@ class PropertyApiController
 
     public function update($req, $res)
     {
+        if(!$res->user) {
+            return $this->view->response("No autorizado", 401);
+        }
+
+    
+
         $errors = [];
 
         $id = $req->params->id;
