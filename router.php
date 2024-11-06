@@ -15,7 +15,6 @@
     // $router->addRoute('tareas/:id'  ,            'DELETE',  'TaskApiController',   'delete');
     $router->addRoute('property'  ,                'POST',    'PropertyApiController',     'create');
     $router->addRoute('property/:id'  ,            'PUT',     'PropertyApiController',     'update');
-    // $router->addRoute('tareas/:id/finalizada'  , 'PUT',     'TaskApiController',   'setFinalize');
     
     // $router->addRoute('usuarios/token'    ,            'GET',     'UserApiController',   'getToken');
 

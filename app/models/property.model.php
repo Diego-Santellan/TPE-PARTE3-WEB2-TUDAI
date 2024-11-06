@@ -32,6 +32,18 @@ class PropertyModel extends ModelConectDB
         return $properties;    
     }
 
+    public function getAllFilter($filter_by, $filter_value){
+        // 2. Ejecuto la consulta
+        $sql = "SELECT * FROM propiedad WHERE $filter_by = ?";
+        $query = $this->db->prepare($sql);
+        $query->execute([$filter_value]);
+
+        // 3. Obtengo los datos en un arreglo de objetos
+        $properties = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $properties;   
+    }
+
     public function getPropertiesForOwner($id_owner)
     {
         // traer todas las propiedades donde el dueño es quien llega por params 

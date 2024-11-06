@@ -10,6 +10,7 @@
                 return;
             }
             $jwt = $auth_header[1];
+            // valida el token 
             $res->user = validateJWT($jwt);
         }
     }

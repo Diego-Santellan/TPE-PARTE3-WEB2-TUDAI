@@ -17,8 +17,10 @@ class PropertyApiController
     private $optionsModeProperty = ["venta", "alquiler"];
     private $optionsStatusProperty = ["vendido", "alquilado", "disponible"];
     private $optionsModeAvailable = ["ASC", "DESC"];
-    
-    private $optionsColumnsAvailable=['id_property','type','zone','price','description','mode','status','city','id_owner'];
+
+    private $optionsColumnsAvailable = ['id_property', 'type', 'zone', 'price', 'description', 'mode', 'status', 'city', 'id_owner'];
+
+    private $optionsFilterAvailable = ['type','status','city','zone','id_owner'];
 
     // CONSTRUCTOR
     public function __construct()
@@ -34,32 +36,58 @@ class PropertyApiController
     public function getAll($req, $res)
     {
         $errors = [];
-        $orderBy='';
-        $mode='';
+        $orderBy = '';
+        $mode = '';
         // api/property?orderBy=columna && mode=asc o desc
-        if(isset($req->query->orderBy) && isset($req->query->mode) && !empty($req->query->orderBy) && !empty($req->query->mode)){//si estan seteados los parametros
-            
-            if(!$this->validOption(($req->query->orderBy) ,$this->optionsColumnsAvailable)){//si no es opc valida
+        if (isset($req->query->orderBy) && isset($req->query->mode) && !empty($req->query->orderBy) && !empty($req->query->mode)) { //si estan seteados los parametros
+
+            if (!$this->validOption(($req->query->orderBy), $this->optionsColumnsAvailable)) { //si no es opc valida
                 $errors[] = 'No se puede ordenar por esa caracteristica(inexistente)';
-            }else{ //si ingresan opcion valida
+            } else { //si ingresan opcion valida
                 $orderBy = $req->query->orderBy;
-                
-                if(!$this->validOption(($req->query->mode) ,$this->optionsModeAvailable)){//si no es modo(ascendente o desendente) valido
+
+                if (!$this->validOption(($req->query->mode), $this->optionsModeAvailable)) { //si no es modo(ascendente o desendente) valido
                     $errors[] = 'No existe esa modo de orden: solo ascendete y descendente';
-                }else{
+                } else {
                     $mode = $req->query->mode;
                     $properties = $this->model->getAllOrder($orderBy, $mode);
                 }
             }
-            
+
             if (count($errors) > 0) {
-                return $this->view->response(['error' => 'Ocurrio un problema al obtener los datos: ' . implode(', ', $errors)], 400);
+                $errorsString =implode(', ', $errors);
+                $error_msj = "error: ocurrio un problema al obtener los datos: " . $errorsString;
+                return $this->view->response([$error_msj, 400]);
             }
-        }else{
-            // obtengo propiedades de la DB 
-            $properties = $this->model->getAll();
+        } else {
+            // api/property?filterBy=zone && filter_value=centro
+            if (isset($req->query->filterBy) && !empty($req->query->filterBy)) {
+                if (!$this->validOption(($req->query->filterBy), $this->optionsFilterAvailable)) { //si no es opc valida
+                    $errors[] = 'No se puede filtrar por esa caracteristica(inexistente)';
+                }else{
+                    $filter_by= $req->query->filterBy;
+                    $filter_value= $req->query->filter_value;
+                    
+                    $properties = $this->model->getAllFilter($filter_by, $filter_value);
+                    if(!$properties){
+                        return $this->view->response(['Error' => 'No existen propiedades con esa caracteristica'], 400);//400 bad request 
+                    }
+
+                }
+                
+                if (count($errors) > 0) {
+                    $errorsString =implode(', ', $errors);
+                    $error_msj = "error: ocurrio un problema al obtener los datos: " . $errorsString;
+                    return $this->view->response([$error_msj, 400]);
+                }
+            } else {
+                // obtengo propiedades de la DB 
+                $properties = $this->model->getAll();
+            }
         }
-        
+
+
+
         //verifico si trajo las propiedadesde la db
         if (!$properties) {
             $errors[] = 'Ocurrio un problema al obtener los datos de las propiedades';

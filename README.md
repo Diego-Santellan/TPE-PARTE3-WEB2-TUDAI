@@ -197,4 +197,13 @@ http://localhost/tpespecial3/api/property?orderBy=zone&mode=ASC
 Intentar ordenar por columna color (inexistente) de forma descendente que el codigo de respuesta sea: 
 http://localhost/tpespecial3/api/property?orderBy=color&mode=DESC
 
+ que el codigo de respuesta sea 200:
+http://localhost/tpespecial3/api/property?filterBy=zone&filter_value=centro 
+
+http://localhost/tpespecial3/api/property?filterBy=status&filter_value=disponible
+
+http://localhost/tpespecial3/api/property?filterBy=city&filter_value=tandil
+
+http://localhost/tpespecial3/api/property?filterBy=type&filter_value=casa
+
 5) HACER DEAFULT 
