@@ -206,4 +206,9 @@ http://localhost/tpespecial3/api/property?filterBy=city&filter_value=tandil
 
 http://localhost/tpespecial3/api/property?filterBy=type&filter_value=casa
 
+
+6) paginado 
+
+con error http://localhost/tpespecial3/api/property?quantity=10&numberPage=h
+
 5) HACER DEAFULT 

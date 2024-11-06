@@ -19,8 +19,9 @@ class PropertyModel extends ModelConectDB
     }
 
 
-    public function getAllOrder($nombreCol, $mode){
-        
+    public function getAllOrder($nombreCol, $mode)
+    {
+
         // 2. Ejecuto la consulta
         $sql = "SELECT * FROM propiedad ORDER BY $nombreCol $mode";
         $query = $this->db->prepare($sql);
@@ -29,10 +30,44 @@ class PropertyModel extends ModelConectDB
         // 3. Obtengo los datos en un arreglo de objetos
         $properties = $query->fetchAll(PDO::FETCH_OBJ);
 
-        return $properties;    
+        return $properties;
     }
 
-    public function getAllFilter($filter_by, $filter_value){
+    public function countProperties()
+    {
+
+
+        $query = $this->db->prepare(' SELECT COUNT(*) AS total_propiedad FROM propiedad');
+        $query->execute();
+
+        // 3. Obtengo los datos $query->fetch(PDO::FETCH_ASSOC): Esto obtiene el resultado de la consulta como un arreglo asociativo.
+        // ['total_propiedad']: Accedemos a la columna total_propiedad del arreglo, que contiene el número total de registros en la tabla propiedad
+        $total = $query->fetch(PDO::FETCH_ASSOC)['total_propiedad'];
+
+        return $total;
+    }
+
+    public function getPagination($quantity, $numberPage)
+    {
+        //5-10-15         2 
+
+
+        $inicioDeConsulta = ($numberPage - 1) * $quantity; //-1 por que traigo los datos en un arreglo 
+
+        // 2. Ejecuto la consulta
+        $sql = "SELECT * FROM propiedad LIMIT $inicioDeConsulta, $quantity";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        // 3. Obtengo los datos en un arreglo de objetos
+        $properties = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $properties;
+    }
+
+
+    public function getAllFilter($filter_by, $filter_value)
+    {
         // 2. Ejecuto la consulta
         $sql = "SELECT * FROM propiedad WHERE $filter_by = ?";
         $query = $this->db->prepare($sql);
@@ -41,7 +76,7 @@ class PropertyModel extends ModelConectDB
         // 3. Obtengo los datos en un arreglo de objetos
         $properties = $query->fetchAll(PDO::FETCH_OBJ);
 
-        return $properties;   
+        return $properties;
     }
 
     public function getPropertiesForOwner($id_owner)

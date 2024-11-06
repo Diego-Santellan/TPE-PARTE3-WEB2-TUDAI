@@ -20,7 +20,7 @@ class PropertyApiController
 
     private $optionsColumnsAvailable = ['id_property', 'type', 'zone', 'price', 'description', 'mode', 'status', 'city', 'id_owner'];
 
-    private $optionsFilterAvailable = ['type','status','city','zone','id_owner'];
+    private $optionsFilterAvailable = ['type', 'status', 'city', 'zone', 'id_owner'];
 
     // CONSTRUCTOR
     public function __construct()
@@ -43,47 +43,77 @@ class PropertyApiController
 
             if (!$this->validOption(($req->query->orderBy), $this->optionsColumnsAvailable)) { //si no es opc valida
                 $errors[] = 'No se puede ordenar por esa caracteristica(inexistente)';
-            } else { //si ingresan opcion valida
+            } else { //si ingresan opcion valida orderBy
                 $orderBy = $req->query->orderBy;
 
                 if (!$this->validOption(($req->query->mode), $this->optionsModeAvailable)) { //si no es modo(ascendente o desendente) valido
                     $errors[] = 'No existe esa modo de orden: solo ascendete y descendente';
-                } else {
+                } else { //si ingresan opcion valida mode
                     $mode = $req->query->mode;
                     $properties = $this->model->getAllOrder($orderBy, $mode);
                 }
             }
 
             if (count($errors) > 0) {
-                $errorsString =implode(', ', $errors);
+                $errorsString = implode(', ', $errors);
                 $error_msj = "error: ocurrio un problema al obtener los datos: " . $errorsString;
                 return $this->view->response([$error_msj, 400]);
             }
-        } else {
-            // api/property?filterBy=zone && filter_value=centro
-            if (isset($req->query->filterBy) && !empty($req->query->filterBy)) {
-                if (!$this->validOption(($req->query->filterBy), $this->optionsFilterAvailable)) { //si no es opc valida
-                    $errors[] = 'No se puede filtrar por esa caracteristica(inexistente)';
-                }else{
-                    $filter_by= $req->query->filterBy;
-                    $filter_value= $req->query->filter_value;
-                    
-                    $properties = $this->model->getAllFilter($filter_by, $filter_value);
-                    if(!$properties){
-                        return $this->view->response(['Error' => 'No existen propiedades con esa caracteristica'], 400);//400 bad request 
-                    }
+        } else if (isset($req->query->filterBy) && !empty($req->query->filterBy)) {            // api/property?filterBy=zone && filter_value=centro
 
-                }
-                
-                if (count($errors) > 0) {
-                    $errorsString =implode(', ', $errors);
-                    $error_msj = "error: ocurrio un problema al obtener los datos: " . $errorsString;
-                    return $this->view->response([$error_msj, 400]);
-                }
+            if (!$this->validOption(($req->query->filterBy), $this->optionsFilterAvailable)) { //si no es opc valida
+                $errors[] = 'No se puede filtrar por esa caracteristica(inexistente)';
             } else {
-                // obtengo propiedades de la DB 
-                $properties = $this->model->getAll();
+                $filter_by = $req->query->filterBy;
+                $filter_value = $req->query->filter_value;
+
+                $properties = $this->model->getAllFilter($filter_by, $filter_value);
+                if (!$properties) {
+                    return $this->view->response(['Error' => 'No existen propiedades con esa caracteristica'], 400); //400 bad request 
+                }
             }
+
+            if (count($errors) > 0) {
+                $errorsString = implode(', ', $errors);
+                $error_msj = "error: ocurrio un problema al obtener los datos: " . $errorsString;
+                return $this->view->response([$error_msj, 400]);
+            }
+        } else if (isset($req->query->quantity) && isset($req->query->numberPage) && !empty($req->query->quantity) && !empty($req->query->numberPage)) {
+
+
+            $totalProperties = $this->model->countProperties();
+            if (!$totalProperties) {
+                return $this->view->response('Error: No hay propiedades que traer', 500);
+            }
+            
+            // lo que llega es de tipo numero , es mayor que 0 y menor que 99.999?
+
+          
+
+            if ($req->query->quantity > $totalProperties || $req->query->quantity < 0) {
+                return $this->view->response( 'Error: fuera de rango cantidad a traer', 400);
+            }
+
+            if ($req->query->numberPage > ($totalProperties/intval($req->query->quantity))|| $req->query->numberPage < 0) {
+                return $this->view->response( 'Error: fuera de rango numero de pagina', 400);
+            }
+
+            if ((!is_numeric($req->query->quantity)) ||(!is_numeric($req->query->numberPage)) ) {
+                return $this->view->response('Error: Debe ingresar un numero ', 400);
+            }
+
+            $quantity = $req->query->quantity;  
+            $numberPage = $req->query->numberPage;
+
+            $properties = $this->model->getPagination($quantity, $numberPage);
+            if (!$properties) {
+                return $this->view->response( 'Error: No hay propiedades que traer', 500);
+            } else {
+                return $this->view->response($properties, 200);
+            }
+        } else {
+            // obtengo propiedades de la DB 
+            $properties = $this->model->getAll();
         }
 
 
