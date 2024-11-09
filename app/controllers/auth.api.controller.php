@@ -8,8 +8,7 @@ class AuthApiController
     private $model;
     private $view;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->model = new UserModel();
         $this->view = new JSONView();
     }
