@@ -17,15 +17,15 @@ Se trata de una API REST pública que brinda integración con otros sistemas a t
 
 - **Listado de Propiedades**: Los usuarios pueden ver todas las propiedades cargadas en la base de datos.
 - **Detalle de Propiedad**: Los usuarios pueden acceder a la información detallada de una propiedad específica.
-- **Listado de Dueños**: Los usuarios pueden visualizar todos los dueños registrados.
+<!-- - **Listado de Dueños**: Los usuarios pueden visualizar todos los dueños registrados. -->
 - **Listado de Propiedades por Dueño**: Los usuarios pueden filtrar las propiedades por cada dueño.
 
 ### Acceso Administrador
 
 - **Autenticación**: Los administradores deben loguearse para acceder a las funcionalidades de administración de datos.
 - **Administración de Propiedades**: Los administradores pueden agregar, editar y eliminar propiedades. Cada propiedad debe estar asociada a un dueño.
-- **Administración de Dueños**: Los administradores pueden agregar, editar y eliminar dueños.
-- **Cerrar Sesión**: Los administradores pueden desloguearse del sistema.
+<!-- - **Administración de Dueños**: Los administradores pueden agregar, editar y eliminar dueños. -->
+<!-- - **Cerrar Sesión**: Los administradores pueden desloguearse del sistema. -->
 
 
 

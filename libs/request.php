@@ -1,8 +1,8 @@
 <?php
     class Request {
-        public $body = null; # { nombre: 'Saludar', descripcion: 'Saludar a todos' }
-        public $params = null; # /api/tareas/:id
-        public $query = null; # ?soloFinalizadas=true
+        public $body = null; # { zona: 'centro', descripcion: 'hermosa propiedad' }
+        public $params = null; # /api/propiedad/:id
+        public $query = null; # ?estado=disponible
 
         public function __construct() {
             try {

@@ -1,7 +1,5 @@
 1+  ESTA BIEN PASAR PROPIEDADES Y DUEÑOS EN GETALL?? ES PARA LISTAR LAS PROPIEDADES
 
 
-3+clase router todo?? 
-
 
 4+delete?
