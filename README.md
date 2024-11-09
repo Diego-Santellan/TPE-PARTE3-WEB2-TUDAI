@@ -1,6 +1,15 @@
-# Trabajo Práctico Especial - WEB 2 - TUDAI - UNICEN - Parte 3
+# TPE - Parte 3: API REST
 
-Este proyecto consiste en la continuación del desarrollo de un sitio web dinámico para la gestión y visualización de propiedades inmobiliarias, basado en el modelo de datos propuesto en la **Parte 1**. Se implementaron nuevas funcionalidades y una sección privada para administrar los datos.
+## Descripción del Proyecto
+
+Se trata de una API REST pública que brinda integración con otros sistemas a través de varios servicios, utilizando una base de datos compartida con el trabajo anterior. Esta API se construyó para ser RESTfull y cumple con varios requerimientos funcionales y no funcionales.
+
+### Requerimientos Funcionales
+- La API ofrece servicios para listar, agregar, y modificar datos de una base de datos compartida.
+- Los servicios permiten ordenar, filtrar, y paginar los resultados.
+- Se asegura que se manejen los códigos de estado HTTP adecuados (200, 201, 400, 404).
+- La autenticación de token es implementada en los servicios para modificaciones de datos (POST, PUT).
+
 
 ## Funcionalidades
 
@@ -18,52 +27,6 @@ Este proyecto consiste en la continuación del desarrollo de un sitio web dinám
 - **Administración de Dueños**: Los administradores pueden agregar, editar y eliminar dueños.
 - **Cerrar Sesión**: Los administradores pueden desloguearse del sistema.
 
-## Requerimientos Técnicos
-
-- El sistema está basado en el patrón **MVC** para separar la lógica del negocio, las vistas y el acceso a los datos.
-- Las vistas son generadas utilizando plantillas **PHTML**.
-- El sitio utiliza **URL semánticas**.
-- La base de datos se inicializa automáticamente si no existe, y se llenará con datos iniciales.
-- La autenticación de usuarios utiliza contraseñas encriptadas con el algoritmo password hash.
-
-## Modelo de Datos
-
-El modelo de datos sigue la estructura definida en la primera parte con las siguientes tablas:
-
-### Atributos de la tabla `duenio`:
-- `id_owner`: `int(11)` (Primary key)
-- `name`: `varchar(50)`
-- `phone`: `varchar(20)`
-- `email`: `varchar(80)` (único)
-
-### Atributos de la tabla `propiedad`:
-- `id_property`: `int(11)` (Primary key)
-- `type`: `varchar(20)`
-- `zone`: `varchar(45)`
-- `price`: `decimal(10,0)`
-- `description`: `varchar(500)`
-- `mode`: `varchar(20)`
-- `status`: `varchar(20)`
-- `city`: `varchar(45)`
-- `id_owner`: `int(11)` (Foreign key que referencia a la tabla `duenio`)
-
-### Atributos de la tabla `users`:
-- `username`: `varchar(20)` (Primary key)
-- `password`: `varchar(60)`
-- `id_user`: `int(11)` (Auto-increment)
-
-
-
-### Requerimientos Funcionales:
-
-## Modelo de Datos
-
-Las entidades principales de la base de datos son **propiedades** y **dueños**. Para cada una se construyó una tabla con sus respectivos atributos. 
-
-- **Tabla propiedades**: Contiene información sobre las propiedades inmobiliarias.
-- **Tabla dueños**: Almacena información sobre los dueños de las propiedades.
-
-La relación entre estas tablas es de **1 a N**, lo que significa que un dueño puede tener múltiples propiedades, pero una propiedad sólo puede pertenecer a un dueño.
 
 
 ## Diagrama de Datos
@@ -83,6 +46,162 @@ password: `admin`
 # ruta: 
 http://localhost/inmobiliaria/ 
 
+## Rutas
+
+### 1. Obtener todas las propiedades y sus dueños
+ **Descripción:** Trae todas las propiedades junto con la información de los dueños.
+- **Endpoint:** `GET http://localhost/tpespecial3/api/property`
+- **Código de Respuesta:** 200
+
+---
+
+### 2. Obtener una propiedad específica y su dueño
+- **Descripción:** Trae una propiedad específica junto con la información del dueño.
+- **Endpoint:** `GET http://localhost/tpespecial3/api/property/10`
+- **Código de Respuesta:** 200
+
+**Caso de error:**
+- **Descripción:** Propiedad no encontrada.
+- **Endpoint:** `GET http://localhost/tpespecial3/api/property/100000`
+- **Código de Respuesta:** 404
+
+---
+
+### 3. Crear una nueva propiedad
+- **Descripción:** Crea un nuevo recurso de propiedad.
+- **Endpoint:** `POST http://localhost/tpespecial3/api/property`
+- **Headers:** 
+  - `Content-Type: application/json`
+- **Body:**
+    ```json
+    {
+        "typePropertyAdd": "casa",
+        "zonePropertyAdd": "centro",
+        "pricePropertyAdd": 12000,
+        "descriptionPropertyAdd": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+        "modePropertyAdd": "venta",
+        "statusPropertyAdd": "disponible",
+        "cityPropertyAdd": "barceloneta",
+        "id_ownerPropertyAdd": 3
+    }
+    ```
+- **Código de Respuesta:** 201
+
+**Caso de error:**
+- **Descripción:** Error en la creación del recurso.
+- **Headers:** 
+  - `Content-Type: application/json`
+- **Body:**
+    ```json
+    {
+        "typePropertyAdd": "casa",
+        "zonePropertyAdd": "centro",
+        "pricePropertyAdd": 12000,
+        "descriptionPropertyAdd": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+        "modePropertyAdd": "venta",
+        "statusPropertyAdd": "disponible",
+        "cityPropertyAdd": "Mallorca",
+        "id_ownerPropertyAdd": 1
+    }
+    ```
+- **Código de Respuesta:** 400
+
+---
+
+### 4. Actualizar una propiedad existente
+- **Descripción:** Actualiza los detalles de una propiedad existente.
+- **Endpoint:** `PUT http://localhost/tpespecial3/api/property/20`
+- **Headers:** 
+  - `Content-Type: application/json`
+- **Body:**
+    ```json
+    {
+        "typePropertyEdit": "departamento",
+        "zonePropertyEdit": "uncas",
+        "pricePropertyEdit": 12000,
+        "descriptionPropertyEdit": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+        "modePropertyEdit": "alquiler",
+        "statusPropertyEdit": "disponible",
+        "cityPropertyEdit": "valencia",
+        "id_ownerPropertyEdit": 3
+    }
+    ```
+- **Código de Respuesta:** 200
+
+**Caso de error:**
+- **Descripción:** Error en la actualización de la propiedad.
+- **Endpoint:** `PUT http://localhost/tpespecial3/api/property/2000`
+- **Headers:** 
+  - `Content-Type: application/json`
+- **Body:**
+    ```json
+    {
+        "typePropertyEdit": "departamento",
+        "zonePropertyEdit": "uncas",
+        "pricePropertyEdit": 12000,
+        "descriptionPropertyEdit": "Una hermosa propiedad ubicada en el centro de la ciudad.",
+        "modePropertyEdit": "alquiler",
+        "statusPropertyEdit": "disponible",
+        "cityPropertyEdit": "valencia",
+        "id_ownerPropertyEdit": 300
+    }
+    ```
+- **Código de Respuesta:** 400
+
+---
+
+### 5. Ordenar propiedades por columnas
+- **Descripción:** Ordena las propiedades por columnas específicas en orden ascendente o descendente.
+
+1. **Ordenar por precio descendente:**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=price&mode=DESC`
+
+2. **Ordenar por precio ascendente:**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=price&mode=ASC`
+
+3. **Ordenar por zona descendente:**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=zone&mode=DESC`
+
+4. **Ordenar por zona ascendente:**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=zone&mode=ASC`
+
+**Caso de error:**
+- **Descripción:** Ordenar por una columna inexistente.
+- **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=color&mode=DESC`
+
+---
+
+### 6. Filtrar propiedades
+- **Descripción:** Filtra propiedades por criterios específicos.
+- **Filtros Disponibles:**
+  1. **Zona:** `GET http://localhost/tpespecial3/api/property?filterBy=zone&filter_value=centro`
+  2. **Estado:** `GET http://localhost/tpespecial3/api/property?filterBy=status&filter_value=disponible`
+  3. **Ciudad:** `GET http://localhost/tpespecial3/api/property?filterBy=city&filter_value=tandil`
+  4. **Tipo de propiedad:** `GET http://localhost/tpespecial3/api/property?filterBy=type&filter_value=casa`
+- **Código de Respuesta:** 200
+
+---
+
+### 7. Paginado
+- **Descripción:** Obtiene las propiedades con paginación.
+- **Endpoint con error:** `GET http://localhost/tpespecial3/api/property?quantity=10&numberPage=h`
+- **Código de Respuesta para error de paginado:** 400
+
+---
+
+### 8. Autenticación con token
+- **Descripción:** Obtiene un token de autenticación.
+- **Endpoint:** `POST http://localhost/tpespecial3/api/usuarios/token`
+- **Autenticación básica:** `webadmin` / `admin`
+
+--- 
+
+## Nota
+En caso de errores o valores no especificados en los filtros o paginación, el sistema aplicará valores por defecto.
+```
+
+5) HACER DEAFULT 
+
 
 ## Agradecimientos
 
@@ -92,129 +211,3 @@ Queremos agradecer a los docentes y ayudantes de la cátedra, así como a la uni
 
 - [Diego Santellán](https://www.linkedin.com/in/diego-santellan/)
 - [Lis Medina](https://www.linkedin.com/in/lis-medina/)
-
-
-
-
-<!-- Rutas :  -->
-1) Traer TODAS las propiedades y los dueños de las mismas y que el codigo de respuesta sea 200
-http://localhost/tpespecial3/api/property
-
-2) Traer UNA propiedad y el dueño de la misma y que el codigo de respuesta sea 200
-http://localhost/tpespecial3/api/property/10
-
-Traer UNA propiedad y el dueño de la misma  y que el codigo de respuesta sea 404
-http://localhost/tpespecial3/api/property/100000
-
-3) CREAR un recurso propiedad y que que el codigo de respuesta sea 201
-
-http://localhost/tpespecial3/api/property
-
-header: Content-Type:application/json
-body: 
- {
-    "typePropertyAdd": "casa",
-    "zonePropertyAdd": "centro",
-    "pricePropertyAdd": 12000,
-    "descriptionPropertyAdd": "Una hermosa propiedad ubicada en el centro de la ciudad.",
-    "modePropertyAdd": "venta",
-    "statusPropertyAdd": "disponible",
-    "cityPropertyAdd": "barceloneta",
-    "id_ownerPropertyAdd": 3
-}
-
-
- CREAR un recurso propiedad y que te de codigo de respuesta 400:
-
- header: Content-Type:application/json
-
-body {
-    "typePropertyAdd": "casa",
-    "zonePropertyAdd": "centro",
-    "pricePropertyAdd": 12000,
-    "descriptionPropertyAdd": "Una hermosa propiedad ubicada en el centro de la ciudad.",
-    "modePropertyAdd": "venta",
-    "statusPropertyAdd": "disponible",
-    "cityPropertyAdd": "Mallorca",
-    "id_ownerPropertyAdd": 1
-}
-
-
-4) Actualizar una propiedady que te de codigo de respuesta 200
-http://localhost/tpespecial3/api/property/20
-
- header: Content-Type:application/json
-
-
-body:
-{
-    "typePropertyEdit": "departamento",
-    "zonePropertyEdit": "uncas",
-    "pricePropertyEdit": 12000,
-    "descriptionPropertyEdit": "Una hermosa propiedad ubicada en el centro de la ciudad.",
-    "modePropertyEdit": "alquiler",
-    "statusPropertyEdit": "disponible",
-    "cityPropertyEdit": "valencia",
-    "id_ownerPropertyEdit": 3
-    }
-
-
-
-
-
-
- Actualizar una propiedad y que te codigo de respuesta 400
- http://localhost/tpespecial3/api/property/2000
-  header: Content-Type:application/json
-
-body:
-{
-    "typePropertyEdit": "departamento",
-    "zonePropertyEdit": "uncas",
-    "pricePropertyEdit": 12000,
-    "descriptionPropertyEdit": "Una hermosa propiedad ubicada en el centro de la ciudad.",
-    "modePropertyEdit": "alquiler",
-    "statusPropertyEdit": "disponible",
-    "cityPropertyEdit": "valencia",
-    "id_ownerPropertyEdit": 300
-    }
-
-
-5)ORDENAR POR CUALQUIER COLUMNA YA SEA ASCENDENTE O DESCENDENTEMENTE :
-
-ordenar por columna precio de forma descendente y que el codigo de respuesta sea :
-http://localhost/tpespecial3/api/property?orderBy=price&mode=DESC
-
-ordenar por columna precio de forma ascendente y que el codigo de respuesta sea:
-http://localhost/tpespecial3/api/property?orderBy=price&mode=ASC
-
-ordenar por columna zona de forma descendente y que el codigo de respuesta sea:
-http://localhost/tpespecial3/api/property?orderBy=zone&mode=DESC
-
-ordenar por columna zona de forma ascendente y que el codigo de respuesta sea:
-http://localhost/tpespecial3/api/property?orderBy=zone&mode=ASC
-
-Intentar ordenar por columna color (inexistente) de forma descendente que el codigo de respuesta sea: 
-http://localhost/tpespecial3/api/property?orderBy=color&mode=DESC
-
- que el codigo de respuesta sea 200:
-http://localhost/tpespecial3/api/property?filterBy=zone&filter_value=centro 
-
-http://localhost/tpespecial3/api/property?filterBy=status&filter_value=disponible
-
-http://localhost/tpespecial3/api/property?filterBy=city&filter_value=tandil
-
-http://localhost/tpespecial3/api/property?filterBy=type&filter_value=casa
-
-
-6) paginado 
-
-con error http://localhost/tpespecial3/api/property?quantity=10&numberPage=h
-
-
-7) login token 
-http://localhost/tpespecial3/api/usuarios/token
-
-auth: webadmin admin 
-
-5) HACER DEAFULT 
