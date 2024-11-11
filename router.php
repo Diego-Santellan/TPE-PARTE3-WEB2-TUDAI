@@ -9,7 +9,7 @@ require_once 'app/middlewares/jwt.auth.middleware.php';
 
 $router = new Router();
 
-$router->addMiddleware(new JWTAuthMiddleware());
+$router->addMiddleware( new JWTAuthMiddleware());
 
 #                       endpoint                        verbo                   controller                        método
 $router->addRoute('property',                'GET',     'PropertyApiController',    'getAll');

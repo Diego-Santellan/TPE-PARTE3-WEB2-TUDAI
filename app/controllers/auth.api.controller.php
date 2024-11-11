@@ -21,11 +21,11 @@ class AuthApiController
         $auth_header = explode(' ', $auth_header); // ["Basic", "dXN1YXJpbw=="]
       
         if (count($auth_header) != 2) {
-            return $this->view->response("Error: faltan completar datos", 400);
+            return $this->view->response("Error en los datos", 400);
         }
       
         if ($auth_header[0] != 'Basic') {
-            return $this->view->response("Error en los datos ingresados", 400);
+            return $this->view->response("Error en los datos", 400);
         }
       
         $user_pass = base64_decode($auth_header[1]); // "usuario:password"
@@ -43,8 +43,8 @@ class AuthApiController
             'username' => $user->username,
             'iat' => time(),
             'exp' => time() + 3600,
-            'Saludo' => 'Hola',
+            'Saludo' => 'Hola'
         ));
-        return $this->view->response($token);
+        return $this->view->response($token,200);
     }
 }
