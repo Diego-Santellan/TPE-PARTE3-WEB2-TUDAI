@@ -192,32 +192,29 @@ http://localhost/inmobiliaria/
 11. **Ordenar por CITY ascendente. código de respuesta: 200**
    - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=city&mode=ASC`
 
-12. **Ordenar por CITY escendente. código de respuesta: 200**
-   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=city&mode=ASC`
+12. **Ordenar por CITY descendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=city&mode=DESC`
    
-12. **Ordenar por CITY escendente. código de respuesta: 200**
-   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=city&mode=ASC`
+13. **Ordenar por STATUS ascendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=status&mode=ASC`
+   
+14. **Ordenar por STATUS descendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=status&mode=DESC`
+   
+15. **Ordenar por ID_OWNER ascendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=id_owner&mode=ASC`
+   
+16. **Ordenar por ID_OWNER descendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=id_owner&mode=DESC`
 
+17.  **Ordenar por TYPE ascendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=type&mode=ASC`
 
-GET http://localhost/tpespecial3/api/property?orderBy=city&mode=DESC
+18.  **Ordenar por TYPE descendente. código de respuesta: 200**
+   - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=type&mode=DESC`
 
-
-GET http://localhost/tpespecial3/api/property?orderBy=status&mode=ASC
-GET http://localhost/tpespecial3/api/property?orderBy=status&mode=DESC
-
-
-
-GET http://localhost/tpespecial3/api/property?orderBy=id_owner&mode=ASC
-GET http://localhost/tpespecial3/api/property?orderBy=id_owner&mode=DESC
-
-
-GET http://localhost/tpespecial3/api/property?orderBy=type&mode=ASC
-GET http://localhost/tpespecial3/api/property?orderBy=type&mode=DESC
-
-
-
-**Caso de error:** reever!!!!!!!!!!!!!!!!!!!!!!
-- **Descripción:** Ordenar por una columna inexistente.
+**Caso de error:** revisado
+- **Descripción:** Ordenar por una columna inexistente. Codigo de rta:404
 - **Endpoint:** `GET http://localhost/tpespecial3/api/property?orderBy=color&mode=DESC`
 
 ---
@@ -258,9 +255,7 @@ GET http://localhost/tpespecial3/api/property?orderBy=type&mode=DESC
 
 **Caso de error (es un ejemplo):**
  **Endpoint:** `GET http://localhost/tpespecial3/api/usuarios/token`
-- **Autenticación básica:** `HOLAWEB2` / `admin` REEVER!!!!!!
-
-
+- **Autenticación básica:** `HOLAWEB2` / `adjkdhjkdhmin` 
 
 
 

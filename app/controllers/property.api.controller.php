@@ -42,8 +42,8 @@ class PropertyApiController
         // api/property?orderBy=columna && mode=asc o desc
         if (isset($req->query->orderBy) && isset($req->query->mode) && !empty($req->query->orderBy) && !empty($req->query->mode)) { //si estan seteados los parametros
 
-            if (!$this->validOption(($req->query->orderBy), $this->optionsColumnsAvailable)) { //si no es opc valida
-                $errors[] = 'No se puede ordenar por esa caracteristica(inexistente)';
+            if (!$this->validOption(($req->query->orderBy),  $this->optionsColumnsAvailable)) { //si no es opc valida
+                return $this->view->response('No se puede ordenar por esa caracteristica(inexistente)', 404);
             } else { //si ingresan opcion valida orderBy
                 $orderBy = $req->query->orderBy;
 
