@@ -14,10 +14,9 @@ $router->addMiddleware( new JWTAuthMiddleware());
 #                       endpoint                        verbo                   controller                        método
 $router->addRoute('property',                'GET',     'PropertyApiController',    'getAll');
 $router->addRoute('property/:id',            'GET',     'PropertyApiController',    'get');
-// $router->addRoute('tareas/:id'  ,            'DELETE',  'TaskApiController',   'delete');
 $router->addRoute('property',                'POST',    'PropertyApiController',    'create');
 $router->addRoute('property/:id',            'PUT',     'PropertyApiController',    'update');
-
+// no se hizo el delete ya que no era un servicio necesario segun la consigna 
 $router->addRoute('usuarios/token',          'GET',    'AuthApiController',      'loginGetToken');
 
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);

@@ -86,27 +86,27 @@ class PropertyApiController
             if (!$totalProperties) {
                 return $this->view->response('Error: No hay propiedades que traer', 500);
             }
-            
+
             // lo que llega es de tipo numero , es mayor que 0 y menor que 99.999?
 
             if ($req->query->quantity > $totalProperties || $req->query->quantity < 0) {
-                return $this->view->response( 'Error: fuera de rango cantidad a traer', 400);
+                return $this->view->response('Error: fuera de rango cantidad a traer', 400);
             }
 
-            if ($req->query->numberPage > ($totalProperties/intval($req->query->quantity))|| $req->query->numberPage < 0) {
-                return $this->view->response( 'Error: fuera de rango numero de pagina', 400);
+            if ($req->query->numberPage > ($totalProperties / intval($req->query->quantity)) || $req->query->numberPage < 0) {
+                return $this->view->response('Error: fuera de rango numero de pagina', 400);
             }
 
-            if ((!is_numeric($req->query->quantity)) ||(!is_numeric($req->query->numberPage)) ) {
+            if ((!is_numeric($req->query->quantity)) || (!is_numeric($req->query->numberPage))) {
                 return $this->view->response('Error: Debe ingresar un numero ', 400);
             }
 
-            $quantity = $req->query->quantity;  
+            $quantity = $req->query->quantity;
             $numberPage = $req->query->numberPage;
 
             $properties = $this->model->getPagination($quantity, $numberPage);
             if (!$properties) {
-                return $this->view->response( 'Error: No hay propiedades que traer', 500);
+                return $this->view->response('Error: No hay propiedades que traer', 500);
             } else {
                 return $this->view->response($properties, 200);
             }
@@ -120,22 +120,30 @@ class PropertyApiController
         //verifico si trajo las propiedadesde la db
         if (!$properties) {
             $errors[] = 'Ocurrio un problema al obtener los datos de las propiedades';
+        } else {
+            //hacemos un foreach para buscar cada dueño de las propiedades en la db y asignarselos
+            foreach ($properties as $property) {
+                $owner = $this->modelOwner->get($property->id_owner); //buscamos el owner en la base de datos
+                if (!$owner) { //en caso de que no se encontrara el dueño avisar
+                    $owner = 'no registrado, probablemente fue eliminado';
+                }
+                $property->duenio = $owner->name; //le asignamos el nombre del duenio a 7la propiedad
+            }
         }
 
-        //uso el modelo de owners para traer todos los dueños -> lo usabamos en el tp2 para el filtrado en la vista
-        $owners = $this->modelOwner->getAll();
+        // //uso el modelo de owners para traer todos los dueños -> lo usabamos en el tp2 para el filtrado en la vista
+        // $owners = $this->modelOwner->getAll();
 
-        if (!$owners) {
-            $errors[] = 'Ocurrio un problema al obtener los datos de los dueños';
-        }
+        // if (!$owners) {
+        //     $errors[] = 'Ocurrio un problema al obtener los datos de los dueños';
+        // }
 
         if (count($errors) > 0) {
             return $this->view->response(['error' => 'Ocurrio un problema al obtener los datos: ' . implode(', ', $errors)], 500);
         }
         //guardo la información en un arreglo
         $response = [
-            'propiedades' => $properties,
-            'dueños' => $owners
+            'propiedades' => $properties
         ];
 
         // mando las propiedades y dueños a la vista en forma de arreglo
@@ -170,10 +178,10 @@ class PropertyApiController
             $idOwner = $property->id_owner;
             //busco el owner por medio del id_owner
             $owner = $this->modelOwner->get($idOwner);
+            $property->duenio = $owner->name;
 
             $response = [
                 'propiedad' => $property,
-                'dueño' => $owner
             ];
 
             // mando la propiedad y el dueño a la vista 
@@ -201,11 +209,11 @@ class PropertyApiController
 
     public function update($req, $res)
     {
-        if(!$res->user) {
+        if (!$res->user) {
             return $this->view->response("No autorizado", 401);
         }
 
-    
+
 
         $errors = [];
 
@@ -361,6 +369,9 @@ class PropertyApiController
 
     public function create($req, $res)
     {
+        if (!$res->user) {//verificacion de que haya un usuario logueado
+            return $this->view->response("No autorizado", 401);
+        }
         $errors = [];
 
         // tomar datos del form ingresados por el usuario y validarlos (funcion  del contoller)
